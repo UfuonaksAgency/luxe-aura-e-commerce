@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
-import logo from '@/assets/logo.jpg';
+import logo from '@/assets/logo-new.png';
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
