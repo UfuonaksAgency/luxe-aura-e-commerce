@@ -12,7 +12,6 @@ export const Header = () => {
   const { currency, toggleCurrency } = useCurrency();
 
   const navigation = [
-    { name: 'Home', href: '/' },
     { name: 'Shop', href: '/shop' },
     { name: 'Our Story', href: '/story' },
     { name: 'Contact', href: '/contact' },
@@ -21,13 +20,13 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-primary border-b border-gold/20 shadow-luxury">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 relative">
           <Link to="/" className="flex items-center">
             <img src={logo} alt="Beelicious Signatures Global" className="h-16 md:h-20 w-auto" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex items-center space-x-8 absolute left-1/2 -translate-x-1/2">
             {navigation.map((item) => (
               <Link
                 key={item.name}
