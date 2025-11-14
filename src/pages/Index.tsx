@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { products } from '@/data/products';
 import heroImage from '@/assets/hero-fragrance.jpg';
+import logo from '@/assets/logo-new.png';
 import { ArrowRight, Sparkles, Home, Package } from 'lucide-react';
 
 const Index = () => {
@@ -21,6 +22,14 @@ const Index = () => {
             src={heroImage}
             alt="Luxury Fragrances"
             className="w-full h-full object-cover opacity-60"
+          />
+        </div>
+        {/* Logo Watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[5]">
+          <img
+            src={logo}
+            alt=""
+            className="w-96 md:w-[600px] h-auto opacity-10"
           />
         </div>
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">

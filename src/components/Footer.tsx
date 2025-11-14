@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import logo from '@/assets/logo-new.png';
 
 export const Footer = () => {
   const [email, setEmail] = useState('');
@@ -24,6 +25,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
           <div>
+            <img src={logo} alt="Beelicious Signatures Global" className="h-12 md:h-16 w-auto mb-4" />
             <h3 className="font-serif text-lg font-bold mb-4 text-gold">About Us</h3>
             <p className="text-sm text-primary-foreground/80 leading-relaxed">
               Beelicious Signatures Global offers luxury fragrances, home scents, and premium products for the discerning customer.
