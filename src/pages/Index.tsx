@@ -47,7 +47,7 @@ const Index = () => {
               </Button>
             </Link>
             <Link to="/story">
-              <Button size="lg" variant="outline" className="border-gold text-primary-foreground hover:bg-gold/10">
+              <Button size="lg" variant="outline" className="border-gold bg-primary/20 text-primary-foreground hover:bg-gold/20 backdrop-blur-sm">
                 Our Story
               </Button>
             </Link>
