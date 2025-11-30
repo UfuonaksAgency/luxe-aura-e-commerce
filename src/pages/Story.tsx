@@ -11,7 +11,7 @@ const Story = () => {
       {/* Hero Section */}
       <section className="bg-primary py-20 px-4">
         <div className="container mx-auto text-center max-w-4xl">
-          <img src={logo} alt="Beelicious Signatures Global" className="h-20 md:h-24 w-auto mx-auto mb-6" />
+          <img src={logo} alt="Beelicious Signatures Global" className="h-20 md:h-24 w-auto mx-auto mb-6 brightness-0 invert" />
           <h1 className="font-serif text-4xl md:text-6xl font-bold text-primary-foreground mb-6">
             Our Story
           </h1>

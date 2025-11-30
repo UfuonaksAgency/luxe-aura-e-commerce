@@ -25,7 +25,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <img src={logo} alt="Beelicious Signatures Global" className="h-16 md:h-24 w-auto mb-4" />
+            <img src={logo} alt="Beelicious Signatures Global" className="h-16 md:h-24 w-auto mb-4 brightness-0 invert" />
             <h3 className="font-serif text-lg font-bold mb-4 text-gold">About Us</h3>
             <p className="text-sm text-primary-foreground/80 leading-relaxed">
               Beelicious Signatures Global offers luxury fragrances, home scents, and premium products for the discerning customer.

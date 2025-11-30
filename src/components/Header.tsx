@@ -22,7 +22,7 @@ export const Header = () => {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 relative">
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Beelicious Signatures Global" className="h-16 md:h-20 w-auto" />
+            <img src={logo} alt="Beelicious Signatures Global" className="h-16 md:h-20 w-auto brightness-0 invert" />
           </Link>
 
           {/* Desktop Navigation - Centered */}
