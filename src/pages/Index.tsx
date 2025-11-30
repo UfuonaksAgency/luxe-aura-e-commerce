@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { products } from '@/data/products';
 import heroImage from '@/assets/hero-fragrance.jpg';
 import logo from '@/assets/logo-new.png';
+import introVideo from '@/assets/intro-video.mp4';
 import { ArrowRight, Sparkles, Home, Package } from 'lucide-react';
 
 const Index = () => {
@@ -14,6 +15,36 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      
+      {/* Video Hero Section - First Thing Visitors See */}
+      <section className="relative h-screen w-full overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src={introVideo} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-primary/40 backdrop-blur-[1px]" />
+        <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="font-serif text-5xl md:text-7xl font-bold text-primary-foreground mb-6 drop-shadow-lg">
+              Beelicious Signatures Global
+            </h1>
+            <p className="text-xl md:text-2xl text-primary-foreground/95 mb-8 drop-shadow-md">
+              Where Luxury Meets Elegance
+            </p>
+            <Link to="/shop">
+              <Button size="lg" className="bg-gold text-primary hover:bg-gold/90 shadow-gold">
+                Explore Collection
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
       
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
