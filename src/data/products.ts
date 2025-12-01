@@ -1,12 +1,12 @@
 export interface Product {
   id: string;
   name: string;
-  category: 'mens-perfume' | 'womens-perfume' | 'oil-perfume' | 'oud' | 'diffuser' | 'candle' | 'room-spray' | 'auto-freshener' | 'fabric-spray';
+  category: string;
   priceNGN: number;
   priceUSD: number;
-  description: string;
-  image: string;
-  inStock: boolean;
+  description?: string;
+  image?: string;
+  inStock?: boolean;
   featured?: boolean;
 }
 
