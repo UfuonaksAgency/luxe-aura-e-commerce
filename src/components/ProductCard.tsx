@@ -22,6 +22,7 @@ import roseImperialImage from '@/assets/products/rose-imperial.jpg';
 import sandalwoodCandleImage from '@/assets/products/sandalwood-candle.jpg';
 
 const imageMap: Record<string, string> = {
+  // Full path format (for database products)
   '/src/assets/products/royal-oud-intense.jpg': royalOudImage,
   '/src/assets/products/velvet-bloom.jpg': velvetBloomImage,
   '/src/assets/products/amber-night-diffuser.jpg': amberDiffuserImage,
@@ -31,6 +32,16 @@ const imageMap: Record<string, string> = {
   '/src/assets/products/lavender-dreams.jpg': lavenderDreamsImage,
   '/src/assets/products/rose-imperial.jpg': roseImperialImage,
   '/src/assets/products/sandalwood-candle.jpg': sandalwoodCandleImage,
+  // Short name format (for local products data)
+  'royal-oud-intense': royalOudImage,
+  'velvet-bloom': velvetBloomImage,
+  'amber-night-diffuser': amberDiffuserImage,
+  'crystal-vanilla-candle': vanillaCandleImage,
+  'ocean-blue-freshener': oceanFreshenerImage,
+  'citrus-elegance': citrusEleganceImage,
+  'lavender-dreams': lavenderDreamsImage,
+  'rose-imperial': roseImperialImage,
+  'sandalwood-candle': sandalwoodCandleImage,
 };
 
 interface ProductCardProps {
