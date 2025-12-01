@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
+import { PriceRangeFilter } from '@/components/PriceRangeFilter';
 import { categories } from '@/data/products';
 import { useProducts } from '@/hooks/useProducts';
-import { Button } from '@/components/ui/button';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSearchParams } from 'react-router-dom';
 
@@ -15,23 +16,47 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState('featured');
   const { products, loading } = useProducts();
+  const { currency } = useCurrency();
+  
+  // Currency-specific price ranges
+  const priceRanges = {
+    NGN: [10000, 85000] as [number, number],
+    USD: [14, 99] as [number, number]
+  };
 
-  const filteredProducts = products.filter(product => 
-    selectedCategory === 'all' || product.category === selectedCategory
-  );
+  const [priceRange, setPriceRange] = useState<[number, number]>(priceRanges[currency]);
+
+  // Reset price range when currency changes
+  useEffect(() => {
+    setPriceRange(priceRanges[currency]);
+  }, [currency]);
+
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    const price = currency === 'NGN' ? product.priceNGN : product.priceUSD;
+    const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+    return matchesCategory && matchesPrice;
+  });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
+    const priceA = currency === 'NGN' ? a.priceNGN : a.priceUSD;
+    const priceB = currency === 'NGN' ? b.priceNGN : b.priceUSD;
+    
     switch (sortBy) {
       case 'price-low':
-        return a.priceNGN - b.priceNGN;
+        return priceA - priceB;
       case 'price-high':
-        return b.priceNGN - a.priceNGN;
+        return priceB - priceA;
       case 'name':
         return a.name.localeCompare(b.name);
       default:
         return 0;
     }
   });
+
+  const handleResetPriceRange = () => {
+    setPriceRange(priceRanges[currency]);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -52,10 +77,11 @@ const Shop = () => {
       {/* Filters & Products */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 container mx-auto">
         {/* Filter Bar */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center justify-between">
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+        <div className="flex flex-col lg:flex-row gap-6 mb-8">
+          {/* Left side filters */}
+          <div className="lg:w-64 flex-shrink-0 space-y-4">
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full sm:w-[200px]">
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -67,36 +93,48 @@ const Shop = () => {
               </SelectContent>
             </Select>
 
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-full sm:w-[200px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="featured">Featured</SelectItem>
-                <SelectItem value="price-low">Price: Low to High</SelectItem>
-                <SelectItem value="price-high">Price: High to Low</SelectItem>
-                <SelectItem value="name">Name: A to Z</SelectItem>
-              </SelectContent>
-            </Select>
+            <PriceRangeFilter
+              priceRange={priceRange}
+              onPriceRangeChange={setPriceRange}
+              onReset={handleResetPriceRange}
+            />
           </div>
 
-          <div className="text-sm text-muted-foreground">
-            {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
+          {/* Right side - products */}
+          <div className="flex-1">
+            {/* Sort and count bar */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6 items-center justify-between">
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="featured">Featured</SelectItem>
+                  <SelectItem value="price-low">Price: Low to High</SelectItem>
+                  <SelectItem value="price-high">Price: High to Low</SelectItem>
+                  <SelectItem value="name">Name: A to Z</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <div className="text-sm text-muted-foreground">
+                {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
+              </div>
+            </div>
+
+            {/* Products Grid */}
+            {sortedProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {sortedProducts.map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No products found matching your filters.</p>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Products Grid */}
-        {sortedProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {sortedProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No products found in this category.</p>
-          </div>
-        )}
       </section>
 
       <Footer />

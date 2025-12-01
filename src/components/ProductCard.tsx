@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ShoppingCart } from 'lucide-react';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { useCart } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 
 // Import product images
 import royalOudImage from '@/assets/products/royal-oud-intense.jpg';
@@ -38,6 +41,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -50,11 +55,20 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Card className="group overflow-hidden border-border/50 hover:border-gold/50 transition-luxury hover:shadow-gold">
       <Link to={`/product/${product.id}`}>
-        <div className="aspect-square overflow-hidden bg-secondary">
+        <div className="aspect-square overflow-hidden bg-secondary relative">
+          {!imageLoaded && !imageError && (
+            <Skeleton className="absolute inset-0 w-full h-full" />
+          )}
           <img
             src={imageMap[product.image] || '/placeholder.svg'}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-luxury"
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageError(true)}
+            className={cn(
+              "w-full h-full object-cover group-hover:scale-105 transition-luxury",
+              imageLoaded ? "opacity-100" : "opacity-0"
+            )}
           />
         </div>
       </Link>
