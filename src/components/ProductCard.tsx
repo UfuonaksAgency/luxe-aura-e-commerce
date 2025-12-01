@@ -13,13 +13,21 @@ import velvetBloomImage from '@/assets/products/velvet-bloom.jpg';
 import amberDiffuserImage from '@/assets/products/amber-night-diffuser.jpg';
 import vanillaCandleImage from '@/assets/products/crystal-vanilla-candle.jpg';
 import oceanFreshenerImage from '@/assets/products/ocean-blue-freshener.jpg';
+import citrusEleganceImage from '@/assets/products/citrus-elegance.jpg';
+import lavenderDreamsImage from '@/assets/products/lavender-dreams.jpg';
+import roseImperialImage from '@/assets/products/rose-imperial.jpg';
+import sandalwoodCandleImage from '@/assets/products/sandalwood-candle.jpg';
 
 const imageMap: Record<string, string> = {
-  'royal-oud-intense': royalOudImage,
-  'velvet-bloom': velvetBloomImage,
-  'amber-night-diffuser': amberDiffuserImage,
-  'crystal-vanilla-candle': vanillaCandleImage,
-  'ocean-blue-freshener': oceanFreshenerImage,
+  '/src/assets/products/royal-oud-intense.jpg': royalOudImage,
+  '/src/assets/products/velvet-bloom.jpg': velvetBloomImage,
+  '/src/assets/products/amber-night-diffuser.jpg': amberDiffuserImage,
+  '/src/assets/products/crystal-vanilla-candle.jpg': vanillaCandleImage,
+  '/src/assets/products/ocean-blue-freshener.jpg': oceanFreshenerImage,
+  '/src/assets/products/citrus-elegance.jpg': citrusEleganceImage,
+  '/src/assets/products/lavender-dreams.jpg': lavenderDreamsImage,
+  '/src/assets/products/rose-imperial.jpg': roseImperialImage,
+  '/src/assets/products/sandalwood-candle.jpg': sandalwoodCandleImage,
 };
 
 interface ProductCardProps {
@@ -44,7 +52,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       <Link to={`/product/${product.id}`}>
         <div className="aspect-square overflow-hidden bg-secondary">
           <img
-            src={imageMap[product.image]}
+            src={imageMap[product.image] || '/placeholder.svg'}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-luxury"
           />
