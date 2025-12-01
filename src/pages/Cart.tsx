@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 
 // Import product images
@@ -24,6 +25,7 @@ const imageMap: Record<string, string> = {
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, totalPriceNGN, totalPriceUSD, clearCart } = useCart();
   const { formatPrice, currency } = useCurrency();
+  const { user } = useAuth();
 
   if (items.length === 0) {
     return (
@@ -142,9 +144,19 @@ const Cart = () => {
                   </span>
                 </div>
               </div>
-              <Button className="w-full bg-gold text-primary hover:bg-gold/90 mb-3 shadow-gold">
-                Proceed to Checkout
-              </Button>
+              {user ? (
+                <Link to="/checkout" className="block">
+                  <Button className="w-full bg-gold text-primary hover:bg-gold/90 mb-3 shadow-gold">
+                    Proceed to Checkout
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth" className="block">
+                  <Button className="w-full bg-gold text-primary hover:bg-gold/90 mb-3 shadow-gold">
+                    Sign In to Checkout
+                  </Button>
+                </Link>
+              )}
               <Link to="/shop">
                 <Button variant="outline" className="w-full">
                   Continue Shopping

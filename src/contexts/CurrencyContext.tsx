@@ -6,6 +6,7 @@ interface CurrencyContextType {
   currency: Currency;
   toggleCurrency: () => void;
   formatPrice: (priceNGN: number, priceUSD: number) => string;
+  formatSinglePrice: (price: number, currency: Currency) => string;
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
@@ -24,8 +25,15 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return `$${priceUSD}`;
   };
 
+  const formatSinglePrice = (price: number, currency: Currency): string => {
+    if (currency === 'NGN') {
+      return `₦${price.toLocaleString()}`;
+    }
+    return `$${price}`;
+  };
+
   return (
-    <CurrencyContext.Provider value={{ currency, toggleCurrency, formatPrice }}>
+    <CurrencyContext.Provider value={{ currency, toggleCurrency, formatPrice, formatSinglePrice }}>
       {children}
     </CurrencyContext.Provider>
   );

@@ -26,10 +26,15 @@ const imageMap: Record<string, string> = {
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const product = products.find(p => p.id === id);
   const { formatPrice } = useCurrency();
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const { product, loading } = useProduct(id);
+  const { products } = useProducts();
+
+  if (loading) {
+    return null;
+  }
 
   if (!product) {
     return (

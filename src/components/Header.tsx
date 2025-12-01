@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { useAuth } from '@/contexts/AuthContext';
 import logo from '@/assets/logo-new.png';
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { totalItems } = useCart();
   const { currency, toggleCurrency } = useCurrency();
+  const { user } = useAuth();
 
   const navigation = [
     { name: 'Shop', href: '/shop' },
@@ -48,6 +50,12 @@ export const Header = () => {
             >
               {currency}
             </Button>
+
+            <Link to={user ? "/account" : "/auth"}>
+              <Button variant="ghost" size="icon" className="text-primary-foreground hover:text-gold transition-luxury">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
             
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative text-primary-foreground hover:text-gold transition-luxury">
