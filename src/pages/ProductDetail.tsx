@@ -2,10 +2,10 @@ import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { products } from '@/data/products';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { useCart } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
+import { useProduct, useProducts } from '@/hooks/useProducts';
 import { ArrowLeft, ShoppingCart, Truck, Shield, Package } from 'lucide-react';
 import { ProductCard } from '@/components/ProductCard';
 
