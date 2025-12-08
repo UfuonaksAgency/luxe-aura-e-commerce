@@ -7,21 +7,16 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, signInWithGoogle, signInWithPhone, verifyPhoneOtp, user } = useAuth();
+  const { signIn, signUp, signInWithGoogle, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,40 +29,18 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (authMethod === 'email') {
-      if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (!error) {
-          navigate('/');
-        }
-      } else {
-        const { error } = await signUp(email, password, fullName);
-        if (!error) {
-          navigate('/');
-        }
+    if (isLogin) {
+      const { error } = await signIn(email, password);
+      if (!error) {
+        navigate('/');
+      }
+    } else {
+      const { error } = await signUp(email, password, fullName);
+      if (!error) {
+        navigate('/');
       }
     }
     
-    setIsLoading(false);
-  };
-
-  const handleSendOtp = async () => {
-    if (!phone) return;
-    setIsLoading(true);
-    const { error } = await signInWithPhone(phone);
-    if (!error) {
-      setOtpSent(true);
-    }
-    setIsLoading(false);
-  };
-
-  const handleVerifyOtp = async () => {
-    if (!phone || !otp) return;
-    setIsLoading(true);
-    const { error } = await verifyPhoneOtp(phone, otp);
-    if (!error) {
-      navigate('/');
-    }
     setIsLoading(false);
   };
 
@@ -124,30 +97,7 @@ const Auth = () => {
                   </span>
                 </div>
 
-                {/* Auth Method Toggle */}
-                <div className="flex gap-2 mb-4">
-                  <Button
-                    type="button"
-                    variant={authMethod === 'email' ? 'default' : 'outline'}
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => { setAuthMethod('email'); setOtpSent(false); }}
-                  >
-                    Email
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={authMethod === 'phone' ? 'default' : 'outline'}
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => { setAuthMethod('phone'); setOtpSent(false); }}
-                  >
-                    Phone
-                  </Button>
-                </div>
-
-                {authMethod === 'email' ? (
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="login-email">Email</Label>
                     <Input
@@ -173,87 +123,14 @@ const Auth = () => {
                       minLength={6}
                     />
                   </div>
-                    <Button 
-                      type="submit" 
-                      className="w-full" 
-                      disabled={isLoading}
-                    >
-                      {isLoading ? 'Signing in...' : 'Sign In'}
-                    </Button>
-                  </form>
-                ) : (
-                  <div className="space-y-4">
-                    {!otpSent ? (
-                      <>
-                        <div className="space-y-2">
-                          <Label htmlFor="phone">Phone Number</Label>
-                          <Input
-                            id="phone"
-                            type="tel"
-                            placeholder="+234xxxxxxxxxx"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
-                            disabled={isLoading}
-                          />
-                          <p className="text-xs text-muted-foreground">
-                            Include country code (e.g., +234 for Nigeria)
-                          </p>
-                        </div>
-                        <Button
-                          type="button"
-                          className="w-full"
-                          onClick={handleSendOtp}
-                          disabled={isLoading || !phone}
-                        >
-                          {isLoading ? 'Sending...' : 'Send Code'}
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <div className="space-y-2">
-                          <Label htmlFor="otp">Verification Code</Label>
-                          <div className="flex justify-center">
-                            <InputOTP
-                              maxLength={6}
-                              value={otp}
-                              onChange={(value) => setOtp(value)}
-                            >
-                              <InputOTPGroup>
-                                <InputOTPSlot index={0} />
-                                <InputOTPSlot index={1} />
-                                <InputOTPSlot index={2} />
-                                <InputOTPSlot index={3} />
-                                <InputOTPSlot index={4} />
-                                <InputOTPSlot index={5} />
-                              </InputOTPGroup>
-                            </InputOTP>
-                          </div>
-                          <p className="text-xs text-muted-foreground text-center">
-                            Enter the 6-digit code sent to {phone}
-                          </p>
-                        </div>
-                        <Button
-                          type="button"
-                          className="w-full"
-                          onClick={handleVerifyOtp}
-                          disabled={isLoading || otp.length !== 6}
-                        >
-                          {isLoading ? 'Verifying...' : 'Verify Code'}
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          className="w-full"
-                          onClick={() => setOtpSent(false)}
-                          disabled={isLoading}
-                        >
-                          Change Phone Number
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                )}
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Signing in...' : 'Sign In'}
+                  </Button>
+                </form>
               </TabsContent>
               
               <TabsContent value="signup">
