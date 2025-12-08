@@ -17,16 +17,20 @@ const Index = () => {
       <Header />
       
       {/* Video Hero Section - First Thing Visitors See */}
-      <section className="relative h-screen w-full overflow-hidden">
+      <section className="relative h-screen min-h-[100svh] w-full overflow-hidden">
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          webkit-playsinline="true"
+          poster={heroImage}
+          className="absolute inset-0 w-full h-full object-cover object-center"
         >
           <source src={introVideo} type="video/mp4" />
         </video>
+        {/* Subtle bottom gradient for smooth transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </section>
       
       {/* Hero Section */}
